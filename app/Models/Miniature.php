@@ -9,5 +9,5 @@ class Miniature extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['ruta_miniature'];
+    protected $fillable = ['route_miniature'];
 }

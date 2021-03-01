@@ -9,5 +9,5 @@ class Video extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['ruta_video'];
+    protected $fillable = ['route_video'];
 }

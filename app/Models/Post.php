@@ -9,20 +9,20 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['miniatura_id', 'video_id', 'title', 'slug', 'content',];
+    protected $fillable = ['miniature_id', 'video_id', 'title', 'slug', 'content',];
 
     public function miniature()
     {
-        return $this->belongsTo('App/Models/Miniature');
+        return $this->belongsTo('App\Models\Miniature');
     }
 
     public function video()
     {
-        return $this->belongsTo('App/Models/Video');
+        return $this->belongsTo('App\Models\Video');
     }
 
-    public function categories()
+    public function getRouteKeyName()
     {
-        return $this->belongsToMany('App\Models\Category');
+        return 'slug';
     }
 }
