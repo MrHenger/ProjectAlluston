@@ -1,0 +1,51 @@
+
+
+#check{
+    display: none;
+}
+.main-nav_checkbtn{
+    font-size: 30px;
+    color: black;
+    float: right;
+    line-height: 80px;
+    margin-right: 10px;
+    cursor: pointer;
+    display: none;
+}
+
+.font-roboto{
+    font-family: 'Roboto', sans-serif;
+}
+
+.title{
+    font-size: 2.5em;
+}
+
+.w-10px{
+    width: 100px;
+}
+
+@media(max-width: 768px){
+    .main-nav_checkbtn{
+        display: block;
+    }
+    .sidebar{
+        position: fixed;
+        left: -100%;
+        transition: all .5s;
+        z-index: 1000;
+    }
+
+    .main-nav_checkbtn:active{
+        font-size: 25px;
+    }
+
+    .show-sidebar{
+        
+        left: 0;
+        
+    }
+}
+
+
+
