@@ -15,7 +15,7 @@ class CreateMiniaturesTable extends Migration
     {
         Schema::create('miniatures', function (Blueprint $table) {
             $table->id();
-            $table->string('ruta_miniature');
+            $table->string('route_miniature');
             $table->timestamps();
         });
     }
