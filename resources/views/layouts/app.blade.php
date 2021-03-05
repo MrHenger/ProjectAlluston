@@ -9,69 +9,87 @@
 
     <title>{{ config('app.name', 'Laravel') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
+    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{asset('css/style-self.css')}}">
+    <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap" rel="stylesheet">
 
-    <!-- Fonts -->
-    <link rel="dns-prefetch" href="//fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
-
-    <!-- Styles -->
-    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <header class="navbar navbar-expand navbar-light bg-prueba">
             <div class="container">
-                <a class="navbar-brand" href="{{ url('/') }}">
-                    {{ config('app.name', 'Laravel') }}
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <!-- Left Side Of Navbar -->
-                    <ul class="navbar-nav mr-auto">
-
-                    </ul>
-
-                    <!-- Right Side Of Navbar -->
-                    <ul class="navbar-nav ml-auto">
-                        <!-- Authentication Links -->
-                        @guest
-                            @if (Route::has('login'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                </li>
-                            @endif
+    
+                <input type="checkbox" id="check">
+                <label for="check" class="main-nav_checkbtn">
+                    <i class="icon ion-md-menu"></i>
+                </label>
+                
+                <a class="mr-auto" href="{{ url('/') }}"><img src="{{ asset('images/logo_alluston.png') }}" height="80" alt="Logo de Alluston"></a>
+                
+                <ul class="navbar-nav">
+                    {{-- <li class="nav-item">
+                        <a class="btn btn-outline-primary m-1" href="{{ url('/') }}">Home</a>
+                    </li> --}}
+                    @guest
+                    <li class="nav-item">
+                        @if (Route::has('login'))
+    
+                            <a class="btn btn-outline-light m-1" href="{{ route('login') }}">{{ __('Login') }}</a>
+                                    
+                        @endif
+                    
+                    </li>
+                    <li class="nav-item">
+                        @if (Route::has('register'))
+                        
+                            <a class="btn btn-outline-light m-1" href="{{ route('register') }}">{{ __('Register') }}</a>
+                                    
+                        @endif
+                    </li>
+                    @else
+                        <li class="nav-item ">
+                            <a class="btn btn-outline-light m-1" href="{{route('user.show', Auth::user())}}">
+                                {{ Auth::user()->name }}
+                            </a>
                             
-                            @if (Route::has('register'))
-                                <li class="nav-item">
-                                    <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                </li>
-                            @endif
-                        @else
-                            <li class="nav-item dropdown">
-                                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
-                                    {{ Auth::user()->name }}
-                                </a>
+                        </li>
 
-                                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
-                                    <a class="dropdown-item" href="{{ route('logout') }}"
-                                       onclick="event.preventDefault();
-                                                     document.getElementById('logout-form').submit();">
-                                        {{ __('Logout') }}
-                                    </a>
-
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                        <li class="nav-item">    
+                            <a class="btn btn-outline-light m-1" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+                    
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
-                                    </form>
-                                </div>
-                            </li>
-                        @endguest
-                    </ul>
-                </div>
+                            </form> 
+                        </li>
+                    @endguest
+                </ul>                               
+            </div>
+        </header>
+
+        <nav class="navbar navbar-dark bg-dark float-left sidebar sticky-top" id="nav-sidebar">
+
+            <ul class="navbar-nav min-vh-100 mt-3">
+                <li class="nav-item arrow-back mx-auto">
+                    <i class="mx-2 icon ion-md-arrow-back"></i>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link m-2" href="{{route('user.index')}}"><i class = "icon ion-md-people"></i> Panel de administrador</a>
+                </li>
+                <li>
+                    <a class="nav-link m-2" href="{{route('post.create')}}"><i class="icon ion-md-add"></i> Crear publicacion</a>
+                </li>
+                <li>
+                    <a class="nav-link m-2" href="{{route('post.list')}}"><i class="icon ion-md-list"></i> Publicaciones</a>
+                </li>
+            </ul>
+            <div class="arrow-back">
+                
             </div>
         </nav>
 
@@ -79,5 +97,10 @@
             @yield('content')
         </main>
     </div>
+
+    <script src="{{asset('js/jquery-3.5.1.slim.min.js')}}"></script>
+    <script src="{{asset('js/popper.min.js')}}"></script>
+    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/sidebar.js')}}"></script>
 </body>
 </html>
