@@ -60,7 +60,7 @@ class PostController extends Controller
 
         Post::create($post); //CREAR LA PUBLICACION
 
-        return redirect('/');
+        return redirect()->route('post.list');
     }
 
     /**
