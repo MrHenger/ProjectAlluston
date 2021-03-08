@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link rel="shortcut icon" href="{{ asset('images/icono.ico') }}">
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{asset('css/bootstrap-reboot.css')}}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{asset('css/style-self.css')}}">
     <title>Alluston</title>
@@ -17,7 +18,29 @@
             @if (Route::has('login'))
                 <div>
                     @auth
-                        <a class="btn btn-outline-light" href="{{ url('/home') }}" >Home</a>
+                        <div class="dropdown">
+                            <button class="btn text-white dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">
+                                @if ($user = Auth::user())
+                                    <img class="border-radius_logo" src="{{asset('/images/photo/'.$user->photo->route_photo)}}" width="50"></td>
+                                @endif
+                            </button>
+                            <div class=" dropdown-menu " aria-labelledby="navbarDropdown">
+                                <a href="#" class="dropdown-item">Perfil</a>
+                                @can('dashboard')
+                                    <a href="{{route('dashboard')}}" class="dropdown-item">Dashboard</a>
+                                @endcan
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                        
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                </form>                                
+                            </div>
+                        </div>
                     @else
                         <a class="btn btn-outline-light" href="{{ route('login') }}" >Login</a>
 
@@ -26,25 +49,26 @@
                         @endif
                     @endauth
                 </div>
+                
             @endif
         </div>
         
     </header>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-prueba sticky-top">
+    <nav class="navbar navbar-expand-md navbar-dark bg-prueba sticky-top">
         <div class="container">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
+                <i class="icon ion-md-menu"></i>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link" href="">Inicio</a>
+                        <a class="nav-link" href="{{route('welcome')}}">Inicio</a>
                     </li class="nav-item">
                     <li class="nav-item">
-                        <a class="nav-link" href="">Tutoriales</a>
+                        <a class="nav-link" href="{{route('post.index')}}">Tutoriales</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="">Sobre Nosotros</a>
+                        <a class="nav-link" href="{{route('about')}}">Sobre Nosotros</a>
                     </li>
                 </ul>
                 <div class="ml-auto">
@@ -61,7 +85,7 @@
 
     <footer class="bg-prueba">
         <div class="container ">
-            <p class="m-0 text-white">Copyright © 2021 Alluston. Todos los Derechos reservados</p>
+            <p class="py-3 mb-0 text-white">Copyright © 2021 Alluston. Todos los Derechos reservados</p>
 
             <div></div>
         </div>
@@ -71,6 +95,6 @@
     <script src="{{asset('js/jquery-3.5.1.slim.min.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('js/sidebar.js')}}"></script>
+    <script src="{{asset('js/scriptSelf.js')}}"></script>
 </body>
 </html>

@@ -7,8 +7,8 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <title>{{ config('app.name', 'Laravel') }}</title>
-
+    <title>Alluston</title>
+    <link rel="shortcut icon" href="{{ asset('images/icono.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
     <link rel="stylesheet" href="{{asset('css/style-self.css')}}">
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
@@ -22,11 +22,11 @@
             <div class="container">
     
                 <input type="checkbox" id="check">
-                <label for="check" class="main-nav_checkbtn">
+                <label for="check" class="main-nav_checkbtn ">
                     <i class="icon ion-md-menu"></i>
                 </label>
                 
-                <a class="mr-auto" href="{{ url('/') }}"><img src="{{ asset('images/logo_alluston.png') }}" height="80" alt="Logo de Alluston"></a>
+                <a class="mr-auto" href="{{ url('/') }}"><img src="{{ asset('images/logo_alluston.png') }}" height="70" alt="Logo de Alluston"></a>
                 
                 <ul class="navbar-nav">
                     {{-- <li class="nav-item">
@@ -49,14 +49,30 @@
                         @endif
                     </li>
                     @else
-                        <li class="nav-item ">
-                            <a class="btn btn-outline-light m-1" href="{{route('user.show', Auth::user())}}">
-                                {{ Auth::user()->name }}
-                            </a>
-                            
-                        </li>
+                        <div class="dropdown">
+                            <button class="btn  dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">
+                                @if ($user = Auth::user())
+                                    <img class="border-radius_logo" src="{{asset('/images/photo/'.$user->photo->route_photo)}}" width="50"></td>
+                                @endif
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a href="{{route('user.show', Auth::user())}}" class="dropdown-item">Perfil</a>
+                                <div class="dropdown-divider"></div>
+                                <a class="dropdown-item" href="{{ route('logout') }}"
+                                    onclick="event.preventDefault();
+                                    document.getElementById('logout-form').submit();">
+                                    {{ __('Logout') }}
+                                </a>
+                        
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                            @csrf
+                                </form>
+                            </div>
+                        </div>
 
-                        <li class="nav-item">    
+
+
+                        {{-- <li class="nav-item">    
                             <a class="btn btn-outline-light m-1" href="{{ route('logout') }}"
                                 onclick="event.preventDefault();
                                             document.getElementById('logout-form').submit();">
@@ -66,32 +82,38 @@
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
                                         @csrf
                             </form> 
-                        </li>
+                        </li> --}}
                     @endguest
                 </ul>                               
             </div>
         </header>
+        
+        @auth
+            <nav class="navbar navbar-dark bg-dark float-left sidebar sticky-top" id="nav-sidebar">
 
-        <nav class="navbar navbar-dark bg-dark float-left sidebar sticky-top" id="nav-sidebar">
-
-            <ul class="navbar-nav min-vh-100 mt-3">
-                <li class="nav-item arrow-back mx-auto">
-                    <i class="mx-2 icon ion-md-arrow-back"></i>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link m-2" href="{{route('user.index')}}"><i class = "icon ion-md-people"></i> Panel de administrador</a>
-                </li>
-                <li>
-                    <a class="nav-link m-2" href="{{route('post.create')}}"><i class="icon ion-md-add"></i> Crear publicacion</a>
-                </li>
-                <li>
-                    <a class="nav-link m-2" href="{{route('post.list')}}"><i class="icon ion-md-list"></i> Publicaciones</a>
-                </li>
-            </ul>
-            <div class="arrow-back">
-                
-            </div>
-        </nav>
+                <ul class="navbar-nav min-vh-100 mt-3">
+                    <li class="nav-item arrow-back mx-auto">
+                        <i class="mx-2 icon ion-md-arrow-back"></i>
+                    </li>
+                    @can('admin.user.index')
+                        <li class="nav-item">
+                            <a class="nav-link m-2" href="{{route('user.index')}}"><i class = "icon ion-md-people"></i> Panel de administrador</a>
+                        </li>
+                    @endcan
+                    
+                    <li>
+                        <a class="nav-link m-2" href="{{route('post.create')}}"><i class="icon ion-md-add"></i> Crear publicacion</a>
+                    </li>
+                    <li>
+                        <a class="nav-link m-2" href="{{route('post.list')}}"><i class="icon ion-md-list"></i> Publicaciones</a>
+                    </li>
+                </ul>
+                <div class="arrow-back">
+                    
+                </div>
+            </nav>
+        @endauth
+        
 
         <main class="py-4">
             @yield('content')

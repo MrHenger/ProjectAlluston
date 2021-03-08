@@ -9,7 +9,12 @@
     </div>
 
     <div class="table-responsive col-11 col-sm-10 col-md-8 mx-auto">
-        <table class="table table-sm table-bordered">
+        @if (session('save'))
+            <div class=" alert alert-success">
+                <strong>{{session('save')}}</strong>
+            </div>    
+        @endif
+        <table class="table table-sm ">
             <thead class="thead-dark">
                 <tr class="text-center">
                     <th scope="col">ID</th>
@@ -17,8 +22,6 @@
                     <th scope="col">Nombre</th>
                     <th scope="col">Email</th>
                     <th scope="col">Roles</th>
-                    <th scope="col">F. Creacion</th>
-                    <th scope="col">F. Actualizacion</th>
                 </tr>
             </thead>
             
@@ -26,21 +29,26 @@
                 @foreach ($users as $user)
                     <tr class="text-center">
                         <td class="align-middle">{{$user->id}}</td>
-                        @if ($user->photo != null)
-                            <td class="align-middle"><img src="{{asset('/images/photo/'.$user->photo->ruta_photo)}}" width="100"></td>
-                        @else
+                        {{-- @if ($user->photo != null) --}}
+                            <td class="align-middle"><img src="{{asset('/images/photo/'.$user->photo->route_photo)}}" width="100"></td>
+                        {{-- @else
                             <td class="align-middle"><img src="{{asset('/images/photo/usuarioAnonimo.jpg')}}" width="100"></td>
-                        @endif
+                        @endif --}}
                         
                         <td class="align-middle"><a href="{{route('user.edit', $user)}}">{{$user->name}}</a></td>
                         <td class="align-middle">{{$user->email}}</td>
-                        <td class="align-middle"></td>
-                        <td class="align-middle">{{$user->created_at}}</td>
-                        <td class="align-middle">{{$user->updated_at}}</td>
+                        <td class="align-middle">
+                            @foreach ($user->roles as $role)
+                                <div>
+                                    {{$role['name']}}
+                                </div>
+                            @endforeach
+                        </td>
                     </tr>
                 @endforeach
             @endif
         </table>
+        {{$users->links()}}
     </div>
 @endsection
 

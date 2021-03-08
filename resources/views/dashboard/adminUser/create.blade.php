@@ -65,6 +65,23 @@
                             *Error: {{$message}}
                         </span>
                     @enderror
+
+                    <div class="mt-3">
+                        <label>Roles de Usuario</label>
+
+                        <div class="row pl-5 pt-2">
+                            @foreach ($roles as $role)
+                                <div class="col-6 col-md-4">
+                                    <input  type="checkbox" id="{{$role->name}}" name="role[]" value="{{$role->id}}" ><label for="{{$role->name}}">{{$role->name}}</label>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                    @error('role')
+                        <div class="errorMessage">
+                            <small>ERROR: {{$message}}</small>
+                        </div>
+                    @enderror
         
                     <div class="mt-3 text-right">
                         <input class="btn btn-primary" type="reset" value="Limpiar">
