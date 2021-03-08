@@ -28,13 +28,15 @@ class UserStoreRequest extends FormRequest
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'password_confirmation' => ['required', 'string', 'min:8'],
+            'role' => 'required',
         ];
     }
 
     public function messages()
     {
         return [
-            'password_confirmation.required' => 'Debe Confirmar la contraseña'
+            'password_confirmation.required' => 'Debe Confirmar la contraseña',
+            'role.required' => 'Debe asiganar un rol de usuario',
         ];
     }
 }
