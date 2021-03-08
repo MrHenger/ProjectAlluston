@@ -8,6 +8,7 @@ use App\Http\Requests\PostUpdateRequest;
 use App\Models\Miniature;
 use App\Models\Video;
 use App\Models\Post;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -18,7 +19,9 @@ class PostController extends Controller
      */
     public function index()
     {
-        //
+        $posts = Post::paginate(12);
+
+        return view('tutoriales', compact('posts'));
     }
 
     /**
@@ -40,6 +43,8 @@ class PostController extends Controller
     public function store(PostStoreRequest $request)
     {
         $post = $request->all();
+
+        $post['user_id'] = Auth::user()->id;
 
         //CREAR LA MINIATURA DE LA PUBLICACION
         if ($archivo = $request->file('route_miniature')) {
@@ -143,7 +148,7 @@ class PostController extends Controller
 
     public function showList()
     {
-        $posts = Post::all();
+        $posts = Post::paginate(20);
         return view('dashboard.posts.showList', compact('posts'));
     }
 }

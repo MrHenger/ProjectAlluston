@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UserStoreRequest;
 use App\Http\Requests\UserUpdateRequest;
 use Illuminate\Http\Request;
+use Spatie\Permission\Models\Role;
 use App\Models\User;
 use App\Models\Photo;
 
@@ -17,7 +18,7 @@ class AdminUserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::paginate(10);
 
         return view('dashboard.adminUser.index', compact('users'));
     }
@@ -29,7 +30,8 @@ class AdminUserController extends Controller
      */
     public function create()
     {
-        return view('dashboard.adminUser.create');
+        $roles = Role::all();
+        return view('dashboard.adminUser.create', compact('roles'));
     }
 
     /**
@@ -49,11 +51,17 @@ class AdminUserController extends Controller
             $foto = Photo::create(['route_photo' => $nombre]);
 
             $user['photo_id'] = $foto->id;
+        } else {
+            $user['photo_id'] = 1;
         }
 
         $user['password'] = bcrypt($request->password);
 
-        User::create($user);
+        $userRole = User::create($user);
+
+        if (isset($user['role'])) {
+            $userRole->syncRoles($user['role']);
+        }
 
         return redirect()->route('user.index');
     }
@@ -77,7 +85,8 @@ class AdminUserController extends Controller
      */
     public function edit(User $user)
     {
-        return view('dashboard.adminUser.edit', compact('user'));
+        $roles = Role::all();
+        return view('dashboard.adminUser.edit', compact('user', 'roles'));
     }
 
     /**
@@ -91,6 +100,8 @@ class AdminUserController extends Controller
     {
         $userUpdate = $request->all();
 
+        echo var_dump($userUpdate['role']);
+
         if ($archivo = $request->file('route_photo')) {
             $nombre = $archivo->getClientOriginalName();
             $archivo->move('images/photo', $nombre);
@@ -98,9 +109,17 @@ class AdminUserController extends Controller
             $foto = Photo::create(['route_photo' => $nombre]);
 
             $userUpdate['photo_id'] = $foto->id;
+        } else {
+            $userUpdate['photo_id'] = 1;
         }
 
         $user->update($userUpdate);
+
+        if (isset($userUpdate['role'])) {
+            $user->syncRoles($userUpdate['role']);
+        }
+
+        return redirect()->route('user.index')->with('save', 'Cambios guardados correctamente');
     }
 
     /**
