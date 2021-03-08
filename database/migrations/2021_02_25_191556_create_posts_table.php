@@ -19,6 +19,8 @@ class CreatePostsTable extends Migration
             $table->foreign('miniature_id')->references('id')->on('miniatures')->onDelete('cascade');
             $table->unsignedBigInteger('video_id')->nullable();
             $table->foreign('video_id')->references('id')->on('videos')->onDelete('cascade');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('title');
             $table->string('slug');
             $table->text('content');
