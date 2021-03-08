@@ -3,6 +3,7 @@
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\AdminUserController;
 use App\Models\Post;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Video;
@@ -19,22 +20,28 @@ use App\Models\Video;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    $total = Post::count();
+    $posts = Post::latest()->take(4)->get();
+    /* $posts = Post::orderBy('id', 'desc')->take(4)->get(); */
+    return view('welcome', compact('posts', 'total'));
+})->name('welcome');
 
 Route::get('/prueba', function () {
-    if (!$video = Video::where('id', 2)->first()) {
-        echo 'encontrado';
-        echo var_dump($video);
-    }
+    $user = User::where('id', 1)->first();
+
+    echo $user->roles[0]['name'];
 });
+
+Route::get('/about', function () {
+    return view('about');
+})->name('about');
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
 
 Route::get('/post/list', [PostController::class, 'showList'])->name('post.list');
 
 Route::resource('/post', PostController::class);
 
-Route::resource('/user', AdminUserController::class);
+Route::resource('admin/user', AdminUserController::class);

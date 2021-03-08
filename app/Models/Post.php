@@ -9,7 +9,7 @@ class Post extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['miniature_id', 'video_id', 'title', 'slug', 'content',];
+    protected $fillable = ['miniature_id', 'video_id', 'user_id', 'title', 'slug', 'content',];
 
     public function miniature()
     {
@@ -19,6 +19,10 @@ class Post extends Model
     public function video()
     {
         return $this->belongsTo('App\Models\Video');
+    }
+    public function user()
+    {
+        return $this->belongsTo('App\Models\User');
     }
 
     public function getRouteKeyName()

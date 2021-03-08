@@ -6,15 +6,16 @@ use Illuminate\View\Component;
 
 class card extends Component
 {
-    public $image;
+
+    public $post;
     /**
      * Create a new component instance.
      *
      * @return void
      */
-    public function __construct($image)
+    public function __construct($post)
     {
-        $this->image = $image;
+        $this->post = $post;
     }
 
     /**
