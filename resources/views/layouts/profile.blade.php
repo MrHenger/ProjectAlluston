@@ -28,50 +28,35 @@
                 
                 <a class="mr-auto" href="{{ url('/') }}"><img src="{{ asset('images/logo_alluston.png') }}" height="70" alt="Logo de Alluston"></a>
                 
-                <ul class="navbar-nav">
-                    @guest
-                    <li class="nav-item">
-                        @if (Route::has('login'))
-    
-                            <a class="btn btn-outline-light m-1" href="{{ route('login') }}">{{ __('Login') }}</a>
-                                    
-                        @endif
+                <ul class="navbar-nav">                                            
+                    <div class="dropdown">
+                        <button class="btn text-white  dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">
+                            @if ($user = Auth::user())
+                                <img class="border-radius_logo" src="{{asset('/images/photo/'.$user->photo->route_photo)}}"></td>
+                            @endif
+                        </button>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a href="{{route('profile.show', Auth::user())}}" class="dropdown-item">Perfil</a>
+                            @can('dashboard')
+                                <a href="{{route('dashboard')}}" class="dropdown-item">Dashboard</a>
+                            @endcan
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                                onclick="event.preventDefault();
+                                document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
                     
-                    </li>
-                    <li class="nav-item">
-                        @if (Route::has('register'))
-                        
-                            <a class="btn btn-outline-light m-1" href="{{ route('register') }}">{{ __('Register') }}</a>
-                                    
-                        @endif
-                    </li>
-                    @else
-                        <div class="dropdown">
-                            <button class="btn text-white  dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">
-                                @if ($user = Auth::user())
-                                    <img class="border-radius_logo" src="{{asset('/images/photo/'.$user->photo->route_photo)}}"></td>
-                                @endif
-                            </button>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a href="{{route('profile.show', Auth::user())}}" class="dropdown-item">Perfil</a>
-                                <div class="dropdown-divider"></div>
-                                <a class="dropdown-item" href="{{ route('logout') }}"
-                                    onclick="event.preventDefault();
-                                    document.getElementById('logout-form').submit();">
-                                    {{ __('Logout') }}
-                                </a>
-                        
-                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                            @csrf
-                                </form>
-                            </div>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                        @csrf
+                            </form>
                         </div>
-                    @endguest
+                    </div>
                 </ul>                               
             </div>
         </header>
         
-        @auth
+{{--         @auth
             @can('dashboard')
                 <nav class="navbar navbar-dark bg-dark float-left sidebar sticky-top" id="nav-sidebar">
 
@@ -97,7 +82,7 @@
                     </ul>
                 </nav>  
             @endcan            
-        @endauth
+        @endauth --}}
         
 
         <main class="py-4">
@@ -108,6 +93,6 @@
     <script src="{{asset('js/jquery-3.5.1.slim.min.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
-    <script src="{{asset('js/sidebar.js')}}"></script>
+{{--     <script src="{{asset('js/sidebar.js')}}"></script> --}}
 </body>
 </html>

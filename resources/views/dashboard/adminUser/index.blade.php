@@ -29,12 +29,7 @@
                 @foreach ($users as $user)
                     <tr class="text-center">
                         <td class="align-middle">{{$user->id}}</td>
-                        {{-- @if ($user->photo != null) --}}
-                            <td class="align-middle"><img src="{{asset('/images/photo/'.$user->photo->route_photo)}}" width="100"></td>
-                        {{-- @else
-                            <td class="align-middle"><img src="{{asset('/images/photo/usuarioAnonimo.jpg')}}" width="100"></td>
-                        @endif --}}
-                        
+                        <td class="align-middle"><img src="{{asset('/images/photo/'.$user->photo->route_photo)}}" width="100"></td>                        
                         <td class="align-middle"><a href="{{route('user.edit', $user)}}">{{$user->name}}</a></td>
                         <td class="align-middle">{{$user->email}}</td>
                         <td class="align-middle">

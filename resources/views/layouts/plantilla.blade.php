@@ -21,11 +21,11 @@
                         <div class="dropdown">
                             <button class="btn text-white dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown">
                                 @if ($user = Auth::user())
-                                    <img class="border-radius_logo" src="{{asset('/images/photo/'.$user->photo->route_photo)}}" width="50"></td>
+                                    <img class="border-radius_logo" src="{{asset('/images/photo/'.$user->photo->route_photo)}}"></td>
                                 @endif
                             </button>
                             <div class=" dropdown-menu " aria-labelledby="navbarDropdown">
-                                <a href="#" class="dropdown-item">Perfil</a>
+                                <a href="{{route('profile.show', Auth::user())}}" class="dropdown-item">Perfil</a>
                                 @can('dashboard')
                                     <a href="{{route('dashboard')}}" class="dropdown-item">Dashboard</a>
                                 @endcan

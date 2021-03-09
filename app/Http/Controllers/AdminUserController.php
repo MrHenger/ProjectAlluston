@@ -11,11 +11,14 @@ use App\Models\Photo;
 
 class AdminUserController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:admin.user.index')->only('index');
+        $this->middleware('can:admin.user.create')->only('create', 'store');
+        $this->middleware('can:admin.user.edit')->only('edit', 'update');
+        $this->middleware('can:admin.user.destroy')->only('destroy');
+    }
+
     public function index()
     {
         $users = User::paginate(10);
@@ -23,23 +26,14 @@ class AdminUserController extends Controller
         return view('dashboard.adminUser.index', compact('users'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         $roles = Role::all();
         return view('dashboard.adminUser.create', compact('roles'));
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(UserStoreRequest $request)
     {
         $user = $request->all();
@@ -66,36 +60,21 @@ class AdminUserController extends Controller
         return redirect()->route('user.index');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(User $user)
     {
-        return view('dashboard.adminUser.show', compact('user'));
+        echo $user;
+        /* return view('dashboard.adminUser.show', compact('user')); */
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(User $user)
     {
         $roles = Role::all();
         return view('dashboard.adminUser.edit', compact('user', 'roles'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(UserUpdateRequest $request, User $user)
     {
         $userUpdate = $request->all();
@@ -122,12 +101,7 @@ class AdminUserController extends Controller
         return redirect()->route('user.index')->with('save', 'Cambios guardados correctamente');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(User $user)
     {
         $user->delete();

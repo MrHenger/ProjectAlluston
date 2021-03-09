@@ -12,11 +12,14 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+    public function __construct()
+    {
+        $this->middleware('can:post.list')->only('showList');
+        $this->middleware('can:post.edit')->only('edit', 'update');
+        $this->middleware('can:post.create')->only('create', 'store');
+        $this->middleware('can:post.destroy')->only('destroy');
+    }
+
     public function index()
     {
         $posts = Post::paginate(12);
@@ -24,22 +27,13 @@ class PostController extends Controller
         return view('tutoriales', compact('posts'));
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function create()
     {
         return view('dashboard.posts.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(PostStoreRequest $request)
     {
         $post = $request->all();
@@ -68,35 +62,19 @@ class PostController extends Controller
         return redirect()->route('post.list');
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function show(Post $post)
     {
         return view('dashboard.posts.show', compact('post'));
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function edit(Post $post)
     {
         return view('dashboard.posts.edit', compact('post'));
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function update(PostUpdateRequest $request, Post $post)
     {
         $postUpdate = $request->all();
@@ -133,12 +111,7 @@ class PostController extends Controller
         return view('dashboard.posts.show', compact('post'));
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(Post $post)
     {
         $post->delete();

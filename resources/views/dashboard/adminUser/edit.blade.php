@@ -16,11 +16,7 @@
                     <div class="mt-3">
                         <label for="route_photo">Foto de Perfil:</label>
                         <div>
-                            @if ($user->photo_id != null)
-                                <img src="{{asset('/images/photo/'.$user->photo->route_photo)}}">
-                            @else
-                                <img src="{{asset('images/photo/usuarioAnonimo.jpg')}}" width="100">    
-                            @endif
+                            <img src="{{asset('/images/photo/'.$user->photo->route_photo)}}" width="100">
                             <input type="file" name="route_photo">
                         </div>
                     </div>
