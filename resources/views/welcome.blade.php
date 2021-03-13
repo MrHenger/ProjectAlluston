@@ -9,7 +9,7 @@
             </p>
             <form class="form-inline my-2 my-lg-0">
                 <div class="input-group col-11 col-md-8 ">
-                    <input type="text" class="form-control" placeholder="Buscar Tutorial">
+                    <input id="search" type="text" class="form-control ui-autocomplete-input" placeholder="Buscar Tutorial">
                     <div class="input-group-append">
                       <button class="btn btn-info" type="button">Buscar</button>
                     </div>

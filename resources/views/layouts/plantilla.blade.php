@@ -7,7 +7,8 @@
     <link rel="shortcut icon" href="{{ asset('images/icono.ico') }}">
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('css/bootstrap-reboot.css')}}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{asset('js/jquery-ui-1.12.1/jquery-ui.min.css')}}">
     <link rel="stylesheet" href="{{asset('css/style-self.css')}}">
     <title>Alluston</title>
 </head>
@@ -92,9 +93,11 @@
         
     </footer>
 
-    <script src="{{asset('js/jquery-3.5.1.slim.min.js')}}"></script>
+    <script src="{{asset('js/jquery-3.6.0.min.js')}}"></script>
+    <script src="{{asset('js/jquery-ui-1.12.1/jquery-ui.min.js')}}"></script>
     <script src="{{asset('js/popper.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.min.js')}}"></script>
     <script src="{{asset('js/scriptSelf.js')}}"></script>
+
 </body>
 </html>
