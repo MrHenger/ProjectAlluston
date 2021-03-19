@@ -30,9 +30,6 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/prueba', function () {
-    $user = User::where('id', 1)->first();
-
-    echo $user->roles[0]['name'];
 });
 
 Route::get('/about', function () {

@@ -116,7 +116,7 @@ class PostController extends Controller
     {
         $post->delete();
 
-        return redirect()->route('post.List');
+        return redirect()->route('post.list');
     }
 
     public function showList()

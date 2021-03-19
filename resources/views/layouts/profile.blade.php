@@ -9,7 +9,7 @@
 
     <title>Alluston</title>
     <link rel="shortcut icon" href="{{ asset('images/icono.ico') }}">
-    <link rel="stylesheet" href="{{ asset('css/bootstrap.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/app.css') }}">
     <link rel="stylesheet" href="{{asset('css/style-self.css')}}">
     <link href="https://unpkg.com/ionicons@4.5.10-0/dist/css/ionicons.min.css" rel="stylesheet">
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -91,8 +91,7 @@
     </div>
 
     <script src="{{asset('js/jquery-3.5.1.slim.min.js')}}"></script>
-    <script src="{{asset('js/popper.min.js')}}"></script>
-    <script src="{{asset('js/bootstrap.min.js')}}"></script>
+    <script src="{{asset('js/app.js')}}"></script>
 {{--     <script src="{{asset('js/sidebar.js')}}"></script> --}}
 </body>
 </html>
