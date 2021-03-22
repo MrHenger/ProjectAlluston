@@ -69,35 +69,33 @@ class PostController extends Controller
     }
 
 
-    public function edit(Post $post)
-    {
-        return view('dashboard.posts.edit', compact('post'));
-    }
-
-
-    public function update(PostUpdateRequest $request, Post $post)
+    public function update(PostUpdateRequest $request)
     {
         $postUpdate = $request->all();
 
+        $post = Post::find($postUpdate['id']);
+
+        /* ****LA FUNCION DE EDITAR LA MINIATURA DE MOMENTO NO ESTA DISPONIBLE*** */
 
         //ACTUALIZAR MINIATURA DE LA PUBLICACION
-        if ($archivo = $request->file('route_miniature')) {
+        /* if ($archivo = $request->file('route_miniature')) {
             $nombre = $archivo->getClientOriginalName();
             $archivo->move('images/miniatures', $nombre);
 
             $miniature = Miniature::create(['route_miniature' => $nombre]);
 
             $postUpdate['miniature_id'] = $miniature->id;
-        }
+        } */
 
         //ACTUALIZAR LA RUTA DEL VIDEO
-        if (isset($postUpdate['route_video'])) { //SI SE INSERTA UN NUEVO REGISTRO
+        $videoUpdate = $postUpdate['video'];
+        if (isset($videoUpdate['route_video'])) { //SI SE INSERTA UN NUEVO REGISTRO
             if (($video = Video::where('id', $post->video_id)->first()) == null) { //SI NO EXISTIA UN REGISTRO PREVIO
 
-                $video = Video::create(['route_video' => $postUpdate['route_video']]);
+                $video = Video::create(['route_video' => $videoUpdate['route_video']]);
                 $postUpdate['video_id'] = $video->id;
             } else { //SI YA EXISTIA UN REGISTRO PREVIO
-                $video->update(['route_video' => $postUpdate['route_video']]);
+                $video->update(['route_video' => $videoUpdate['route_video']]);
             }
         } else { //SI NO SE INSERTA UN NUEVO REGISTRO
             if (($video = Video::where('id', $post->video_id)->first()) != null) { //SI YA EXISTIA UN REGISTRO PREVIO
@@ -108,20 +106,45 @@ class PostController extends Controller
 
         $post->update($postUpdate); //ACTUALIZAR PUBLICACION
 
-        return view('dashboard.posts.show', compact('post'));
+        //Llamar las relaciones de la variable post para que se pasen en formato JSON
+        $post->miniture;
+        $post->video;
+        $post->user;
+
+        return $post;
     }
 
 
     public function destroy(Post $post)
     {
         $post->delete();
-
-        return redirect()->route('post.list');
     }
 
-    public function showList()
+    public function showList(Request $request)
     {
-        $posts = Post::paginate(20);
-        return view('dashboard.posts.showList', compact('posts'));
+        if ($request->ajax()) {
+            $posts = Post::paginate(10);
+
+            foreach ($posts as $post) {
+                //Llamar las relaciones de la variable post para que se pasen en formato JSON
+                $post->miniature;
+                $post->video;
+                $post->user;
+            }
+
+            return [
+                'paginate' => [
+                    'total' => $posts->total(),
+                    'current_page' => $posts->currentPage(),
+                    'per_page' => $posts->perPage(),
+                    'last_page' => $posts->lastPage(),
+                    'from' => $posts->firstItem(),
+                    'to' => $posts->lastPage(),
+                ],
+                'posts' => $posts,
+            ];
+        } else {
+            return view('dashboard.posts.showList');
+        }
     }
 }

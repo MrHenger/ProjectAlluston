@@ -30,6 +30,25 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/prueba', function () {
+    $posts = Post::paginate(10);
+
+    foreach ($posts as $post) {
+        $post->miniature;
+        $post->video;
+        $post->user;
+    }
+
+    return [
+        'paginate' => [
+            'total' => $posts->total(),
+            'current_page' => $posts->currentPage(),
+            'per_page' => $posts->perPage(),
+            'last_page' => $posts->lastPage(),
+            'from' => $posts->firstItem(),
+            'to' => $posts->lastPage(),
+        ],
+        'posts' => $posts,
+    ];
 });
 
 Route::get('/about', function () {
@@ -43,7 +62,7 @@ Route::get('/dashboard', [HomeController::class, 'index'])->name('dashboard')->m
 
 Route::get('/post/list', [PostController::class, 'showList'])->name('post.list');
 
-Route::resource('/post', PostController::class);
+Route::resource('/post', PostController::class)->except('edit');
 
 Route::resource('/admin/user', AdminUserController::class);
 

@@ -62,7 +62,7 @@
     color: white;
 }
 
-.prueba {
+.footer {
     max-height: 250px;
 }
 
@@ -112,6 +112,18 @@
 .image-round {
     border: 2px solid black;
     border-radius: 50%;
+}
+.flotante {
+    z-index: 1200;
+    width: 600px;
+    height: 600px;
+    background-color: red;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
 }
 
 /*  SOBREESCRIBIENDO CLASES DE BOOTSTRAP   */
