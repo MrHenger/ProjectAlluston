@@ -28,13 +28,6 @@
 						</div>                                        
 					
 						<div class="col-6 mx-auto">
-							<!-- <a
-								class="btn btn-primary"
-								href="#"
-								@click.prevent="editModefunction(post)"
-								title="Editar"
-								><i class="icon ion-md-create"></i
-							></a> -->
 							<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#staticBackdrop" @click="editModefunction(post)">
 								<i class="icon ion-md-create"></i>
 							</button>
@@ -42,8 +35,9 @@
 					</div>
 				</td>
 				
-				<postedit :post="datos"></postedit>
+				
 			</tr>
+			<postedit @reset="resetPage(paginate.current_page)" :post="datos"></postedit>
 		</table>
 
 		<nav>
@@ -171,6 +165,9 @@ export default {
 			if (confirmation) {
 				this.destroyePost({ post, page });
 			}
+		},
+		resetPage: function (page) {
+			this.getAllPosts(page);
 		},
 	},
 	created() {

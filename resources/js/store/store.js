@@ -10,7 +10,7 @@ export const store = new vuex.Store({
         posts: [],
         paginate: {
             total: 0,
-            current_page: 1,
+            current_page: 0,
             per_page: 0,
             last_page: 0,
             from: 0,

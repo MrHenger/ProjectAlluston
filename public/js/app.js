@@ -1969,15 +1969,32 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
-  name: "PostEdit",
+  data: function data() {
+    return {
+      changes: false
+    };
+  },
   props: ["post"],
+  name: "PostEdit",
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(["savePost"])), {}, {
     postEdit: function postEdit(datos) {
       this.savePost(datos);
+    },
+    cancelEdit: function cancelEdit() {
+      if (this.changes) {
+        if (confirm("Estas seguro que quiere descartar los cambios?")) {
+          this.$emit("reset");
+          $("#staticBackdrop").modal("hide");
+          this.changes = false;
+        }
+      } else {
+        $("#staticBackdrop").modal("hide");
+      }
+    },
+    madeChanges: function madeChanges() {
+      this.changes = true;
     }
   })
 });
@@ -2003,12 +2020,6 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-//
-//
-//
-//
-//
-//
 //
 //
 //
@@ -2176,6 +2187,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
           page: page
         });
       }
+    },
+    resetPage: function resetPage(page) {
+      this.getAllPosts(page);
     }
   }),
   created: function created() {
@@ -2301,7 +2315,7 @@ var store = new vuex__WEBPACK_IMPORTED_MODULE_3__.default.Store({
     posts: [],
     paginate: {
       total: 0,
-      current_page: 1,
+      current_page: 0,
       per_page: 0,
       last_page: 0,
       from: 0,
@@ -38042,14 +38056,34 @@ var render = function() {
       [
         _c("div", { staticClass: "modal-dialog modal-lg mx-auto" }, [
           _c("div", { staticClass: "modal-content" }, [
-            _vm._m(0),
+            _c("div", { staticClass: "modal-header" }, [
+              _c("h5", { staticClass: "modal-title " }, [
+                _vm._v(
+                  "\n                        Editar Publicacion\n                    "
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "button",
+                {
+                  staticClass: "close",
+                  attrs: { type: "button", "aria-label": "Close" },
+                  on: { click: _vm.cancelEdit }
+                },
+                [
+                  _c("span", { attrs: { "aria-hidden": "true" } }, [
+                    _vm._v("×")
+                  ])
+                ]
+              )
+            ]),
             _vm._v(" "),
             _c("div", { staticClass: "modal-body" }, [
               _c("div", { staticClass: "mb-3 mx-3 text-left" }, [
                 _c("form", { attrs: { enctype: "multipart/form-data" } }, [
                   _c("div", { staticClass: "mt-3 row" }, [
                     _c("img", {
-                      staticClass: "col-10 mx-auto",
+                      staticClass: "col-10 mx-auto preview",
                       attrs: {
                         src:
                           "http://alluston.test/images/miniatures/" +
@@ -38077,6 +38111,7 @@ var render = function() {
                         attrs: { type: "text", name: "title" },
                         domProps: { value: _vm.post.title },
                         on: {
+                          change: _vm.madeChanges,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
@@ -38105,6 +38140,7 @@ var render = function() {
                         attrs: { type: "text", name: "slug" },
                         domProps: { value: _vm.post.slug },
                         on: {
+                          change: _vm.madeChanges,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
@@ -38135,6 +38171,7 @@ var render = function() {
                         attrs: { name: "content", cols: "30", rows: "10" },
                         domProps: { value: _vm.post.content },
                         on: {
+                          change: _vm.madeChanges,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
@@ -38170,6 +38207,7 @@ var render = function() {
                         },
                         domProps: { value: _vm.post.video.route_video },
                         on: {
+                          change: _vm.madeChanges,
                           input: function($event) {
                             if ($event.target.composing) {
                               return
@@ -38190,7 +38228,8 @@ var render = function() {
                       "button",
                       {
                         staticClass: "btn btn-secondary",
-                        attrs: { type: "button", "data-dismiss": "modal" }
+                        attrs: { type: "button" },
+                        on: { click: _vm.cancelEdit }
                       },
                       [
                         _vm._v(
@@ -38227,33 +38266,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "modal-header" }, [
-      _c("h5", { staticClass: "modal-title " }, [
-        _vm._v(
-          "\n                        Editar Publicacion\n                    "
-        )
-      ]),
-      _vm._v(" "),
-      _c(
-        "button",
-        {
-          staticClass: "close",
-          attrs: {
-            type: "button",
-            "data-dismiss": "modal",
-            "aria-label": "Close"
-          }
-        },
-        [_c("span", { attrs: { "aria-hidden": "true" } }, [_vm._v("×")])]
-      )
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -38287,81 +38300,81 @@ var render = function() {
           _vm._m(0),
           _vm._v(" "),
           _vm._l(_vm.posts, function(post, index) {
-            return _c(
-              "tr",
-              { key: index, staticClass: "text-center" },
-              [
-                _c("td", { staticClass: "align-middle" }, [
-                  _vm._v(_vm._s(post.id))
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "align-middle" }, [
-                  _c("img", {
-                    attrs: {
-                      src: _vm.raiz + "/" + post.miniature.route_miniature,
-                      width: "60",
-                      height: "30"
-                    }
-                  })
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "align-middle text-left" }, [
-                  _c(
-                    "a",
-                    {
-                      attrs: { href: "http://alluston.test/post/" + post.slug }
-                    },
-                    [_vm._v(_vm._s(post.title))]
-                  )
-                ]),
-                _vm._v(" "),
-                _c("td", { staticClass: "align-middle" }, [
-                  _c("div", { staticClass: "row" }, [
-                    _c("div", { staticClass: "col-6 mx-auto" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-danger",
-                          attrs: { type: "button", title: "Eliminar" },
-                          on: {
-                            click: function($event) {
-                              return _vm.deletePost(
-                                post,
-                                _vm.paginate.current_page
-                              )
-                            }
+            return _c("tr", { key: index, staticClass: "text-center" }, [
+              _c("td", { staticClass: "align-middle" }, [
+                _vm._v(_vm._s(post.id))
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "align-middle" }, [
+                _c("img", {
+                  attrs: {
+                    src: _vm.raiz + "/" + post.miniature.route_miniature,
+                    width: "60",
+                    height: "30"
+                  }
+                })
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "align-middle text-left" }, [
+                _c(
+                  "a",
+                  { attrs: { href: "http://alluston.test/post/" + post.slug } },
+                  [_vm._v(_vm._s(post.title))]
+                )
+              ]),
+              _vm._v(" "),
+              _c("td", { staticClass: "align-middle" }, [
+                _c("div", { staticClass: "row" }, [
+                  _c("div", { staticClass: "col-6 mx-auto" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-danger",
+                        attrs: { type: "button", title: "Eliminar" },
+                        on: {
+                          click: function($event) {
+                            return _vm.deletePost(
+                              post,
+                              _vm.paginate.current_page
+                            )
                           }
+                        }
+                      },
+                      [_c("i", { staticClass: "icon ion-md-close" })]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-6 mx-auto" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "btn btn-primary",
+                        attrs: {
+                          type: "button",
+                          "data-toggle": "modal",
+                          "data-target": "#staticBackdrop"
                         },
-                        [_c("i", { staticClass: "icon ion-md-close" })]
-                      )
-                    ]),
-                    _vm._v(" "),
-                    _c("div", { staticClass: "col-6 mx-auto" }, [
-                      _c(
-                        "button",
-                        {
-                          staticClass: "btn btn-primary",
-                          attrs: {
-                            type: "button",
-                            "data-toggle": "modal",
-                            "data-target": "#staticBackdrop"
-                          },
-                          on: {
-                            click: function($event) {
-                              return _vm.editModefunction(post)
-                            }
+                        on: {
+                          click: function($event) {
+                            return _vm.editModefunction(post)
                           }
-                        },
-                        [_c("i", { staticClass: "icon ion-md-create" })]
-                      )
-                    ])
+                        }
+                      },
+                      [_c("i", { staticClass: "icon ion-md-create" })]
+                    )
                   ])
-                ]),
-                _vm._v(" "),
-                _c("postedit", { attrs: { post: _vm.datos } })
-              ],
-              1
-            )
+                ])
+              ])
+            ])
+          }),
+          _vm._v(" "),
+          _c("postedit", {
+            attrs: { post: _vm.datos },
+            on: {
+              reset: function($event) {
+                return _vm.resetPage(_vm.paginate.current_page)
+              }
+            }
           })
         ],
         2

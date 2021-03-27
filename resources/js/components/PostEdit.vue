@@ -10,8 +10,9 @@
                         <button
                             type="button"
                             class="close"
-                            data-dismiss="modal"
+                            
                             aria-label="Close"
+                            @click="cancelEdit"
                         >
                             <span aria-hidden="true">&times;</span>
                         </button>
@@ -22,9 +23,9 @@
                             <form enctype="multipart/form-data">
                     
                                 <div class="mt-3 row">
-                                    <img class="col-10 mx-auto" :src="'http://alluston.test/images/miniatures/'+post.miniature.route_miniature">
+                                    <img class="col-10 mx-auto preview" :src="'http://alluston.test/images/miniatures/'+post.miniature.route_miniature">
                                     <!-- <div>
-                                        <input type="file" name="route_miniature">
+                                        <input type="file" name="route_miniature" @change="getNameImage">
                                     </div> -->
                                 </div>
                     
@@ -32,7 +33,7 @@
                                     <label for="title">Titulo:</label>
                                     <div>
                                         <input class="form-control" type="text" name="title" 
-                                        v-model="post.title">
+                                        v-model="post.title" @change="madeChanges">
                                     </div>
                                 </div>
                     
@@ -40,42 +41,39 @@
                                     <label for="slug">Slug:</label>
                                     <div>
                                         <input class="form-control" type="text" name="slug" 
-                                        v-model="post.slug">
+                                        v-model="post.slug" @change="madeChanges">
                                     </div>
                                 </div>
                     
                                 <div class="mt-3">
                                     <label for="content">Descripcion:</label>
                                     <div>
-                                        <textarea class="form-control" name="content" cols="30" rows="10" v-model="post.content"></textarea>
+                                        <textarea class="form-control" name="content" cols="30" rows="10" v-model="post.content" @change="madeChanges"></textarea>
                                     </div>
                                 </div>
                     
                                 <div class="mt-3">
                                     <label for="route_video">Link del video:</label>
                                     <div>
-                                        <input class="form-control" type="text" name="route_video" v-model="post.video.route_video" placeholder="Ejemplo: https://www.youtube.com/embed/ZCsS1GGPrWU">
+                                        <input class="form-control" type="text" name="route_video" v-model="post.video.route_video" @change="madeChanges" placeholder="Ejemplo: https://www.youtube.com/embed/ZCsS1GGPrWU">
                                     </div>
                                 </div>
                                 <div class="modal-footer">
                                     <button
                                         type="button"
                                         class="btn btn-secondary"
-                                        data-dismiss="modal"
+                                        @click="cancelEdit"
                                     >
                                         Atras
                                     </button>
                                     <button type="submit" class="btn btn-primary" data-dismiss="modal" @click.prevent="postEdit(post)">
                                         Actualizar
                                     </button>
+
                                 </div>
                             </form>
-                            
                         </div>
-
-
                     </div>
-                    
                 </div>
             </div>
         </div>
@@ -85,13 +83,33 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-	name: "PostEdit",
+	data() {
+		return {
+			changes: false,
+		};
+	},
 	props: ["post"],
+	name: "PostEdit",
 	methods: {
 		...mapActions(["savePost"]),
 
 		postEdit(datos) {
 			this.savePost(datos);
+		},
+
+		cancelEdit() {
+			if (this.changes) {
+				if (confirm("Estas seguro que quiere descartar los cambios?")) {
+					this.$emit("reset");
+					$("#staticBackdrop").modal("hide");
+					this.changes = false;
+				}
+			} else {
+				$("#staticBackdrop").modal("hide");
+			}
+		},
+		madeChanges() {
+			this.changes = true;
 		},
 	},
 };
